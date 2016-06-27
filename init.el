@@ -7,6 +7,8 @@
    (quote
     ("d677ef584c6dfc0697901a44b885cc18e206f05114c8a3b7fde674fce6180879" "8aebf25556399b58091e533e455dd50a6a9cba958cc4ebb0aab175863c25b9a4" default)))
  '(global-whitespace-mode nil)
+ '(js-indent-level 2)
+ '(jsx-indent-level 2)
  '(package-archives
    (quote
     (("melpa" . "https://melpa.org/packages/")
@@ -53,3 +55,10 @@
 (setq-default indent-tabs-mode nil)
 (setq-default tab-width 4)
 (setq indent-line-function 'insert-tab)
+
+;; put backup files in a specific directory
+;; https://www.emacswiki.org/emacs/BackupDirectory#toc1
+(setq backup-directory-alist
+          `((".*" . ,temporary-file-directory)))
+    (setq auto-save-file-name-transforms
+          `((".*" ,temporary-file-directory t)))
