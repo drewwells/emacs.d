@@ -3,4 +3,5 @@
 *.cache
 *.eld
 *.last
+elpa/archives
 *.desktop

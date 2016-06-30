@@ -3,16 +3,17 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(ag-reuse-buffers t)
  '(custom-safe-themes
-   (quote
-    ("d677ef584c6dfc0697901a44b885cc18e206f05114c8a3b7fde674fce6180879" "8aebf25556399b58091e533e455dd50a6a9cba958cc4ebb0aab175863c25b9a4" default)))
+        (quote
+         ("d677ef584c6dfc0697901a44b885cc18e206f05114c8a3b7fde674fce6180879" "8aebf25556399b58091e533e455dd50a6a9cba958cc4ebb0aab175863c25b9a4" default)))
  '(global-whitespace-mode nil)
  '(js-indent-level 2)
  '(jsx-indent-level 2)
  '(package-archives
-   (quote
-    (("melpa" . "https://melpa.org/packages/")
-     ("gnu" . "http://elpa.gnu.org/packages/"))))
+        (quote
+         (("melpa" . "https://melpa.org/packages/")
+          ("gnu" . "http://elpa.gnu.org/packages/"))))
  '(tool-bar-mode nil))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
@@ -24,6 +25,9 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; List of manual things to load ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;; http://emacs.stackexchange.com/questions/3481/remove-bak-files-from-ido-mode-minibuffer
+(add-to-list 'ido-ignore-files "\*ag search")
 
 ;; force package initialization
 ;; http://stackoverflow.com/questions/24610945/emacs-cant-autostart-projectile-installed-through-melpa
