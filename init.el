@@ -26,6 +26,7 @@
 ;; List of manual things to load ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+(require 'ido)
 ;; http://emacs.stackexchange.com/questions/3481/remove-bak-files-from-ido-mode-minibuffer
 (add-to-list 'ido-ignore-files "\*ag search")
 
