@@ -5,7 +5,7 @@
 ;; license that can be found in the LICENSE file.
 
 ;; Version: 0.1
-;; Package-Version: 20160428.721
+;; Package-Version: 20160708.1146
 ;; Package-Requires: ((go-mode "1.3.1") (cl-lib "0.5"))
 ;; Keywords: tools
 
@@ -23,6 +23,7 @@
 ;;; Code:
 
 (require 'compile)
+(require 'easymenu)
 (require 'go-mode)
 (require 'json)
 (require 'simple)
@@ -94,6 +95,25 @@
   (define-key m "x" #'go-guru-expand-region)) ;; x for expand
 
 (define-key go-mode-map (kbd "C-c C-o") #'go-guru-map)
+
+(easy-menu-define go-guru-mode-menu go-mode-map
+  "Menu for Go Guru."
+  '("Guru"
+    ["Jump to Definition"    go-guru-definition t]
+    ["Show Referrers"        go-guru-referrers t]
+    ["Show Free Names"       go-guru-freevars t]
+    ["Describe Expression"   go-guru-describe t]
+    ["Show Implements"       go-guru-implements t]
+    "---"
+    ["Show Callers"          go-guru-callers t]
+    ["Show Callees"          go-guru-callees t]
+    ["Show Callstack"        go-guru-callstack t]
+    "---"
+    ["Show Points-To"        go-guru-pointsto t]
+    ["Show Which Errors"     go-guru-whicherrs t]
+    ["Show Channel Peers"    go-guru-peers t]
+    "---"
+    ["Set pointer analysis scope..." go-guru-set-scope t]))
 
 ;;;###autoload
 (defun go-guru-set-scope ()
