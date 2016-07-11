@@ -5,19 +5,21 @@
  ;; If there is more than one, they won't work right.
  '(create-lockfiles nil)
  '(custom-safe-themes
-   (quote
-    ("d677ef584c6dfc0697901a44b885cc18e206f05114c8a3b7fde674fce6180879" "8aebf25556399b58091e533e455dd50a6a9cba958cc4ebb0aab175863c25b9a4" default)))
+        (quote
+         ("d677ef584c6dfc0697901a44b885cc18e206f05114c8a3b7fde674fce6180879" "8aebf25556399b58091e533e455dd50a6a9cba958cc4ebb0aab175863c25b9a4" default)))
  '(global-whitespace-mode nil)
  '(go-guru-build-tags "dev")
  '(go-guru-scope "github.com")
  '(go-oracle-command "oracle")
  '(go-play-browse-function (quote browse-url))
+ '(ido-ignore-buffers (quote ("\\*.+\\*" "\\*ag search" "\\` ")))
+ '(ido-use-url-at-point t)
  '(js-indent-level 2)
  '(jsx-indent-level 2)
  '(package-archives
-   (quote
-    (("melpa" . "https://melpa.org/packages/")
-     ("gnu" . "http://elpa.gnu.org/packages/"))))
+        (quote
+         (("melpa" . "https://melpa.org/packages/")
+          ("gnu" . "http://elpa.gnu.org/packages/"))))
  '(tool-bar-mode nil)
  '(web-mode-code-indent-offset 2)
  '(web-mode-enable-auto-indentation nil))
@@ -62,6 +64,15 @@
 (setq-default indent-tabs-mode nil)
 (setq-default tab-width 4)
 (setq indent-line-function 'insert-tab)
+
+;; https://www.masteringemacs.org/article/introduction-to-ido-mode
+(setq ido-enable-flex-matching t)
+(setq ido-everywhere t)
+(ido-mode 1)
+(setq ido-use-filename-at-point 'guess)
+(setq ido-create-new-buffer 'always)
+(setq ido-file-extensions-order '(".go" ".js" ".css" ))
+
 
 ;; put backup files in a specific directory
 ;; https://www.emacswiki.org/emacs/BackupDirectory#toc1
