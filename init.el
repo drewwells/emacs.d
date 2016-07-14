@@ -3,23 +3,23 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(ag-executable "ag")
  '(create-lockfiles nil)
  '(custom-safe-themes
-        (quote
-         ("d677ef584c6dfc0697901a44b885cc18e206f05114c8a3b7fde674fce6180879" "8aebf25556399b58091e533e455dd50a6a9cba958cc4ebb0aab175863c25b9a4" default)))
+   (quote
+    ("d677ef584c6dfc0697901a44b885cc18e206f05114c8a3b7fde674fce6180879" "8aebf25556399b58091e533e455dd50a6a9cba958cc4ebb0aab175863c25b9a4" default)))
  '(global-whitespace-mode nil)
  '(go-guru-build-tags "dev")
  '(go-guru-scope "github.com")
  '(go-oracle-command "oracle")
  '(go-play-browse-function (quote browse-url))
- '(ido-ignore-buffers (quote ("\\*.+\\*" "\\*ag search" "\\` ")))
  '(ido-use-url-at-point t)
  '(js-indent-level 2)
  '(jsx-indent-level 2)
  '(package-archives
-        (quote
-         (("melpa" . "https://melpa.org/packages/")
-          ("gnu" . "http://elpa.gnu.org/packages/"))))
+   (quote
+    (("melpa" . "https://melpa.org/packages/")
+     ("gnu" . "http://elpa.gnu.org/packages/"))))
  '(tool-bar-mode nil)
  '(web-mode-code-indent-offset 2)
  '(web-mode-enable-auto-indentation nil))
@@ -52,11 +52,6 @@
 ;;(require 'go-mode-load)
 (add-hook 'before-save-hook 'gofmt-before-save)
 
-;; go-autocomplete https://github.com/nsf/gocode
-(require 'go-autocomplete)
-(require 'auto-complete-config)
-(ac-config-default)
-
 ;; go-oracle https://docs.google.com/document/d/1SLk36YRjjMgKqe490mSRzOPYEDe0Y_WQNRv-EiFYUyw/view?pli=1#
 (load "~/src/golang.org/x/tools/cmd/oracle/oracle.el")
 
@@ -80,3 +75,28 @@
           `((".*" . ,temporary-file-directory)))
     (setq auto-save-file-name-transforms
           `((".*" ,temporary-file-directory t)))
+
+;; http://emacsredux.com/blog/2013/04/03/delete-file-and-buffer/
+(defun delete-file-and-buffer ()
+  "Kill the current buffer and deletes the file it is visiting."
+  (interactive)
+  (let ((filename (buffer-file-name)))
+    (when filename
+      (if (vc-backend filename)
+          (vc-delete-file filename)
+        (progn
+          (delete-file filename)
+          (message "Deleted file %s" filename)
+          (kill-buffer))))))
+
+(global-set-key (kbd "C-c D")  'delete-file-and-buffer)
+
+
+;; from flx
+(require 'flx-ido)
+(ido-mode 1)
+(ido-everywhere 1)
+(flx-ido-mode 1)
+;; disable ido faces to see flx highlights.
+(setq ido-enable-flex-matching t)
+(setq ido-use-faces nil)
