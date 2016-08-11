@@ -10,9 +10,12 @@
     ("d677ef584c6dfc0697901a44b885cc18e206f05114c8a3b7fde674fce6180879" "8aebf25556399b58091e533e455dd50a6a9cba958cc4ebb0aab175863c25b9a4" default)))
  '(global-whitespace-mode nil)
  '(go-guru-build-tags "dev")
- '(go-guru-scope "github.com")
+ '(go-guru-scope "github.com orahub.oraclecorp.com")
  '(go-oracle-command "oracle")
  '(go-play-browse-function (quote browse-url))
+ '(ido-ignore-files
+   (quote
+    ("\\`CVS/" "\\`#" "\\`.#" "\\`\\.\\./" "\\`\\./" "\\.test$")))
  '(ido-use-url-at-point t)
  '(js-indent-level 2)
  '(jsx-indent-level 2)
@@ -20,6 +23,12 @@
    (quote
     (("melpa" . "https://melpa.org/packages/")
      ("gnu" . "http://elpa.gnu.org/packages/"))))
+ '(package-selected-packages
+   (quote
+    (go-autocomplete cl-lib yaml-mode web-mode solarized-theme pt popup jsx-mode go-scratch go-projectile flymake-go flx-ido dockerfile-mode docker company-go color-theme-solarized browse-at-remote ag)))
+ '(projectile-globally-ignored-directories
+   (quote
+    (".idea" ".eunit" ".git" ".hg" ".fslckout" ".bzr" "_darcs" ".tox" ".svn" ".stack-work" "vendor")))
  '(tool-bar-mode nil)
  '(web-mode-code-indent-offset 2)
  '(web-mode-enable-auto-indentation nil))
@@ -100,3 +109,10 @@
 ;; disable ido faces to see flx highlights.
 (setq ido-enable-flex-matching t)
 (setq ido-use-faces nil)
+
+(require 'go-guru)
+
+(require 'go-autocomplete)
+(require 'auto-complete-config)
+(ac-config-default)
+(define-key ac-mode-map (kbd "A-TAB") 'auto-complete)
