@@ -4,6 +4,7 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(ag-executable "ag")
+ '(ag-ignore-list (quote ("/vendor/")))
  '(create-lockfiles nil)
  '(custom-safe-themes
    (quote
@@ -112,7 +113,8 @@
 
 (require 'go-guru)
 
+
+;; https://github.com/nsf/gocode
 (require 'go-autocomplete)
 (require 'auto-complete-config)
 (ac-config-default)
-(define-key ac-mode-map (kbd "A-TAB") 'auto-complete)
