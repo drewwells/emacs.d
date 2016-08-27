@@ -7,32 +7,32 @@
  '(ag-ignore-list (quote ("/vendor/")))
  '(create-lockfiles nil)
  '(custom-safe-themes
-   (quote
-    ("d677ef584c6dfc0697901a44b885cc18e206f05114c8a3b7fde674fce6180879" "8aebf25556399b58091e533e455dd50a6a9cba958cc4ebb0aab175863c25b9a4" default)))
+        (quote
+         ("d677ef584c6dfc0697901a44b885cc18e206f05114c8a3b7fde674fce6180879" "8aebf25556399b58091e533e455dd50a6a9cba958cc4ebb0aab175863c25b9a4" default)))
  '(global-whitespace-mode nil)
  '(go-guru-build-tags "dev")
  '(go-guru-scope "github.com orahub.oraclecorp.com")
  '(go-oracle-command "oracle")
  '(go-play-browse-function (quote browse-url))
  '(ido-ignore-files
-   (quote
-    ("\\`CVS/" "\\`#" "\\`.#" "\\`\\.\\./" "\\`\\./" "\\.test$")))
+        (quote
+         ("\\`CVS/" "\\`#" "\\`.#" "\\`\\.\\./" "\\`\\./" "\\.test$")))
  '(ido-use-url-at-point t)
  '(js-indent-level 2)
- '(jsx-indent-level 2)
  '(package-archives
-   (quote
-    (("melpa" . "https://melpa.org/packages/")
-     ("gnu" . "http://elpa.gnu.org/packages/"))))
+        (quote
+         (("melpa" . "https://melpa.org/packages/")
+          ("gnu" . "http://elpa.gnu.org/packages/"))))
  '(package-selected-packages
-   (quote
-    (go-autocomplete cl-lib yaml-mode web-mode solarized-theme pt popup jsx-mode go-scratch go-projectile flymake-go flx-ido dockerfile-mode docker company-go color-theme-solarized browse-at-remote ag)))
+        (quote
+         (go-autocomplete cl-lib yaml-mode web-mode solarized-theme pt popup go-scratch go-projectile flymake-go flx-ido dockerfile-mode docker company-go color-theme-solarized browse-at-remote ag)))
  '(projectile-globally-ignored-directories
-   (quote
-    (".idea" ".eunit" ".git" ".hg" ".fslckout" ".bzr" "_darcs" ".tox" ".svn" ".stack-work" "vendor")))
+        (quote
+         (".idea" ".eunit" ".git" ".hg" ".fslckout" ".bzr" "_darcs" ".tox" ".svn" ".stack-work" "vendor")))
  '(tool-bar-mode nil)
  '(web-mode-code-indent-offset 2)
- '(web-mode-enable-auto-indentation nil))
+ '(web-mode-enable-auto-indentation nil)
+ '(web-mode-markup-indent-offset 2))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -118,3 +118,18 @@
 (require 'go-autocomplete)
 (require 'auto-complete-config)
 (ac-config-default)
+
+;; http://cha1tanya.com/2015/06/20/configuring-web-mode-with-jsx.html
+(require 'web-mode)
+(add-to-list 'auto-mode-alist '("\\.jsx\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.js\\'" . web-mode))
+(setq web-mode-content-types-alist
+  '(("jsx" . "\\.js[x]?\\'")))
+
+;; http://emacs.stackexchange.com/a/20055/11330
+(add-hook 'web-mode-hook
+      (lambda ()
+        ;; short circuit js mode and just do everything in jsx-mode
+        (if (equal web-mode-content-type "javascript")
+            (web-mode-set-content-type "jsx")
+          (message "now set to: %s" web-mode-content-type))))
