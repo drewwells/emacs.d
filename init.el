@@ -7,28 +7,28 @@
  '(ag-ignore-list (quote ("/vendor/")))
  '(create-lockfiles nil)
  '(custom-safe-themes
-        (quote
-         ("d677ef584c6dfc0697901a44b885cc18e206f05114c8a3b7fde674fce6180879" "8aebf25556399b58091e533e455dd50a6a9cba958cc4ebb0aab175863c25b9a4" default)))
+   (quote
+    ("d677ef584c6dfc0697901a44b885cc18e206f05114c8a3b7fde674fce6180879" "8aebf25556399b58091e533e455dd50a6a9cba958cc4ebb0aab175863c25b9a4" default)))
  '(global-whitespace-mode nil)
  '(go-guru-build-tags "dev")
  '(go-guru-scope "github.com orahub.oraclecorp.com")
  '(go-oracle-command "oracle")
  '(go-play-browse-function (quote browse-url))
  '(ido-ignore-files
-        (quote
-         ("\\`CVS/" "\\`#" "\\`.#" "\\`\\.\\./" "\\`\\./" "\\.test$")))
+   (quote
+    ("\\`CVS/" "\\`#" "\\`.#" "\\`\\.\\./" "\\`\\./" "\\.test$")))
  '(ido-use-url-at-point t)
  '(js-indent-level 2)
  '(package-archives
-        (quote
-         (("melpa" . "https://melpa.org/packages/")
-          ("gnu" . "http://elpa.gnu.org/packages/"))))
+   (quote
+    (("melpa" . "https://melpa.org/packages/")
+     ("gnu" . "http://elpa.gnu.org/packages/"))))
  '(package-selected-packages
-        (quote
-         (go-autocomplete cl-lib yaml-mode web-mode solarized-theme pt popup go-scratch go-projectile flymake-go flx-ido dockerfile-mode docker company-go color-theme-solarized browse-at-remote ag)))
+   (quote
+    (go-autocomplete cl-lib yaml-mode web-mode solarized-theme pt popup go-scratch go-projectile flymake-go flx-ido dockerfile-mode docker company-go color-theme-solarized browse-at-remote ag)))
  '(projectile-globally-ignored-directories
-        (quote
-         (".idea" ".eunit" ".git" ".hg" ".fslckout" ".bzr" "_darcs" ".tox" ".svn" ".stack-work" "vendor")))
+   (quote
+    (".idea" ".eunit" ".git" ".hg" ".fslckout" ".bzr" "_darcs" ".tox" ".svn" ".stack-work" "vendor")))
  '(tool-bar-mode nil)
  '(web-mode-code-indent-offset 2)
  '(web-mode-enable-auto-indentation nil)
@@ -98,8 +98,16 @@
           (delete-file filename)
           (message "Deleted file %s" filename)
           (kill-buffer))))))
+;; http://stackoverflow.com/questions/3417438/closing-all-other-buffers-in-emacs
+(defun kill-other-buffers ()
+    "Kill all other buffers."
+    (interactive)
+    (mapc 'kill-buffer
+          (delq (current-buffer)
+                (remove-if-not 'buffer-file-name (buffer-list)))))
 
 (global-set-key (kbd "C-c D")  'delete-file-and-buffer)
+(global-set-key (kbd "C-c K")  'kill-other-buffers)
 
 
 ;; from flx
@@ -112,7 +120,6 @@
 (setq ido-use-faces nil)
 
 (require 'go-guru)
-
 
 ;; https://github.com/nsf/gocode
 (require 'go-autocomplete)
