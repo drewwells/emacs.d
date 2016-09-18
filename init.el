@@ -10,7 +10,6 @@
    (quote
     ("d677ef584c6dfc0697901a44b885cc18e206f05114c8a3b7fde674fce6180879" "8aebf25556399b58091e533e455dd50a6a9cba958cc4ebb0aab175863c25b9a4" default)))
  '(global-whitespace-mode nil)
- '(go-guru-build-tags "dev")
  '(go-guru-scope "github.com orahub.oraclecorp.com")
  '(go-oracle-command "oracle")
  '(go-play-browse-function (quote browse-url))
@@ -31,7 +30,9 @@
     (".idea" ".eunit" ".git" ".hg" ".fslckout" ".bzr" "_darcs" ".tox" ".svn" ".stack-work" "vendor")))
  '(tool-bar-mode nil)
  '(web-mode-code-indent-offset 2)
+ '(web-mode-css-indent-offset 2)
  '(web-mode-enable-auto-indentation nil)
+ '(web-mode-enable-auto-quoting nil)
  '(web-mode-markup-indent-offset 2))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
