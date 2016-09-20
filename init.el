@@ -6,11 +6,17 @@
  '(ag-executable "ag")
  '(ag-ignore-list (quote ("/vendor/")))
  '(create-lockfiles nil)
+ '(current-language-environment "ASCII")
  '(custom-safe-themes
    (quote
     ("d677ef584c6dfc0697901a44b885cc18e206f05114c8a3b7fde674fce6180879" "8aebf25556399b58091e533e455dd50a6a9cba958cc4ebb0aab175863c25b9a4" default)))
+ '(exec-path
+   (quote
+    ("/usr/bin" "/bin" "/usr/sbin" "/sbin" "/usr/local/Cellar/emacs-mac/emacs-25.1-rc2-mac-5.91/libexec/emacs/25.1/x86_64-apple-darwin15.6.0" "/usr/local/bin" "~/bin")))
  '(global-whitespace-mode nil)
- '(go-guru-scope "github.com orahub.oraclecorp.com")
+ '(go-guru-build-tags "")
+ '(go-guru-scope
+   "orahub.oraclecorp.com/opc-cs-dev/occs/service-manager/admin")
  '(go-oracle-command "oracle")
  '(go-play-browse-function (quote browse-url))
  '(ido-ignore-files
@@ -22,6 +28,7 @@
    (quote
     (("melpa" . "https://melpa.org/packages/")
      ("gnu" . "http://elpa.gnu.org/packages/"))))
+ '(package-enable-at-startup nil)
  '(package-selected-packages
    (quote
     (go-autocomplete cl-lib yaml-mode web-mode solarized-theme pt popup go-scratch go-projectile flymake-go flx-ido dockerfile-mode docker company-go color-theme-solarized browse-at-remote ag)))
@@ -64,7 +71,7 @@
 (add-hook 'before-save-hook 'gofmt-before-save)
 
 ;; go-oracle https://docs.google.com/document/d/1SLk36YRjjMgKqe490mSRzOPYEDe0Y_WQNRv-EiFYUyw/view?pli=1#
-(load "~/src/golang.org/x/tools/cmd/oracle/oracle.el")
+;; (load "~/src/golang.org/x/tools/cmd/oracle/oracle.el")
 
 ;; http://stackoverflow.com/questions/69934/set-4-space-indent-in-emacs-in-text-mode
 (setq-default indent-tabs-mode nil)
@@ -120,7 +127,7 @@
 (setq ido-enable-flex-matching t)
 (setq ido-use-faces nil)
 
-(require 'go-guru)
+;; (require 'go-guru)
 
 ;; https://github.com/nsf/gocode
 (require 'go-autocomplete)

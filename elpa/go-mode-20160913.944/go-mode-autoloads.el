@@ -3,7 +3,7 @@
 ;;; Code:
 
 
-;;;### (autoloads nil "go-mode" "go-mode.el" (22427 36904 0 0))
+;;;### (autoloads nil "go-mode" "go-mode.el" (22489 32502 0 0))
 ;;; Generated autoloads from go-mode.el
 
 (autoload 'go-mode "go-mode" "\
@@ -95,8 +95,7 @@ Tries to look for a URL at point.
 
 ;;;***
 
-;;;### (autoloads nil nil ("go-mode-pkg.el") (22427 36904 873028
-;;;;;;  0))
+;;;### (autoloads nil nil ("go-mode-pkg.el") (22489 32502 0 0))
 
 ;;;***
 
