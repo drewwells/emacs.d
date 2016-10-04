@@ -31,7 +31,8 @@
  '(package-enable-at-startup nil)
  '(package-selected-packages
    (quote
-    (go-autocomplete cl-lib yaml-mode web-mode solarized-theme pt popup go-scratch go-projectile flymake-go flx-ido dockerfile-mode docker company-go color-theme-solarized browse-at-remote ag)))
+    (magit helm-projectile helm-pt go-autocomplete cl-lib yaml-mode web-mode solarized-theme pt popup go-scratch go-projectile flymake-go flx-ido dockerfile-mode docker company-go color-theme-solarized browse-at-remote ag)))
+ '(projectile-completion-system (quote helm))
  '(projectile-globally-ignored-directories
    (quote
     (".idea" ".eunit" ".git" ".hg" ".fslckout" ".bzr" "_darcs" ".tox" ".svn" ".stack-work" "vendor")))
@@ -112,11 +113,11 @@
     (interactive)
     (mapc 'kill-buffer
           (delq (current-buffer)
-                (remove-if-not 'buffer-file-name (buffer-list)))))
+                (cl-remove-if-not 'buffer-file-name (buffer-list)))))
 
 (global-set-key (kbd "C-c D")  'delete-file-and-buffer)
 (global-set-key (kbd "C-c K")  'kill-other-buffers)
-
+(global-set-key (kbd "C-c S")  'projectile-pt)
 
 ;; from flx
 (require 'flx-ido)
