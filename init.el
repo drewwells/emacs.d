@@ -128,7 +128,7 @@
 (setq ido-enable-flex-matching t)
 (setq ido-use-faces nil)
 
-;; (require 'go-guru)
+(require 'go-guru)
 
 ;; https://github.com/nsf/gocode
 (require 'go-autocomplete)
