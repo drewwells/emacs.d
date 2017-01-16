@@ -72,9 +72,6 @@
 ;;(require 'go-mode-load)
 (add-hook 'before-save-hook 'gofmt-before-save)
 
-;; go-oracle https://docs.google.com/document/d/1SLk36YRjjMgKqe490mSRzOPYEDe0Y_WQNRv-EiFYUyw/view?pli=1#
-;; (load "~/src/golang.org/x/tools/cmd/oracle/oracle.el")
-
 ;; http://stackoverflow.com/questions/69934/set-4-space-indent-in-emacs-in-text-mode
 (setq-default indent-tabs-mode nil)
 (setq-default tab-width 4)
@@ -150,3 +147,5 @@
         (if (equal web-mode-content-type "javascript")
             (web-mode-set-content-type "jsx")
           (message "now set to: %s" web-mode-content-type))))
+
+(require 'helm)
