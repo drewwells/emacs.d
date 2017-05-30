@@ -40,7 +40,7 @@
 	 (quote
 		(".idea" ".eunit" ".git" ".hg" ".fslckout" ".bzr" "_darcs" ".tox" ".svn" ".stack-work" "vendor")))
  '(tool-bar-mode nil)
- '(web-mode-code-indent-offset 4)
+ '(web-mode-code-indent-offset 2)
  '(web-mode-enable-auto-indentation nil)
  '(web-mode-enable-auto-quoting nil))
 
@@ -75,7 +75,7 @@
 
 ;; http://stackoverflow.com/questions/69934/set-4-space-indent-in-emacs-in-text-mode
 (setq-default indent-tabs-mode nil)
-(setq-default tab-width 4)
+(setq-default tab-width 2)
 (setq-default indent-line-function 'insert-tab)
 ;; http://web-mode.org/
 (defun my-web-mode-hook ()
@@ -176,6 +176,8 @@
 
 ;; indentation using smart-tabs-mode
 (smart-tabs-insinuate 'nxml 'javascript)
+(smart-tabs-advice js2-indent-line js2-basic-offset)
+
 
 ;; nxml-mode
 (setq
