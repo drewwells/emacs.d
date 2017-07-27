@@ -34,7 +34,7 @@
  '(package-enable-at-startup nil)
  '(package-selected-packages
    (quote
-    (smart-tabs-mode helm helm-ag helm-projectile helm-pt go-guru magit go-autocomplete cl-lib yaml-mode web-mode solarized-theme pt popup go-scratch go-projectile flymake-go flx-ido dockerfile-mode docker company-go color-theme-solarized browse-at-remote ag)))
+    (protobuf-mode smart-tabs-mode helm helm-ag helm-projectile helm-pt go-guru magit go-autocomplete cl-lib yaml-mode web-mode solarized-theme pt popup go-scratch go-projectile flymake-go flx-ido dockerfile-mode docker company-go color-theme-solarized browse-at-remote ag)))
  '(projectile-completion-system (quote helm))
  '(projectile-globally-ignored-directories
    (quote
@@ -186,3 +186,9 @@
     nxml-slash-auto-complete-flag t)
 
 (add-to-list 'auto-mode-alist '("\\.ino\\'" . c++-mode))
+
+;; oracle proxy
+;; (setq url-proxy-services
+;;       '(("no_proxy" . "^\\(localhost\\|10.*\\)")
+;;         ("http" . "http://www-proxy.us.oracle.com:80/")
+;;         ("https" . "http://www-proxy.us.oracle.com:80/")))
