@@ -6,6 +6,7 @@
  '(ag-executable "ag")
  '(ag-ignore-list (quote ("/vendor/")))
  '(create-lockfiles nil)
+ '(css-indent-offset 2)
  '(current-language-environment "ASCII")
  '(custom-safe-themes
    (quote
@@ -15,8 +16,7 @@
     ("/usr/bin" "/bin" "/usr/sbin" "/sbin" "/usr/local/Cellar/emacs-mac/emacs-25.1-rc2-mac-5.91/libexec/emacs/25.1/x86_64-apple-darwin15.6.0" "/usr/local/bin" "~/bin")))
  '(global-whitespace-mode nil)
  '(go-guru-build-tags "")
- '(go-guru-scope
-   "orahub.oraclecorp.com/opc-cs-dev/occs/service-manager/admin")
+ '(go-guru-scope "orahub.oraclecorp.com/odx-oke-dev/k8s-manager/...,")
  '(go-oracle-command "oracle")
  '(go-play-browse-function (quote browse-url))
  '(ido-ignore-buffers (quote ("ag search" "\\` " "go-guru" "scratch" "helm")))
@@ -24,9 +24,9 @@
    (quote
     ("\\`CVS/" "\\`#" "\\`.#" "\\`\\.\\./" "\\`\\./" "\\.test$")))
  '(ido-use-url-at-point t)
- '(js-indent-level 4)
+ '(js-indent-level 2)
  '(menu-bar-mode nil)
- '(nxml-child-indent 4 t)
+ '(nxml-child-indent 2 t)
  '(package-archives
    (quote
     (("melpa" . "https://melpa.org/packages/")
