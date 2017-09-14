@@ -10,10 +10,11 @@
  '(current-language-environment "ASCII")
  '(custom-safe-themes
    (quote
-	("d677ef584c6dfc0697901a44b885cc18e206f05114c8a3b7fde674fce6180879" "8aebf25556399b58091e533e455dd50a6a9cba958cc4ebb0aab175863c25b9a4" default)))
+    ("8db4b03b9ae654d4a57804286eb3e332725c84d7cdab38463cb6b97d5762ad26" "d677ef584c6dfc0697901a44b885cc18e206f05114c8a3b7fde674fce6180879" "8aebf25556399b58091e533e455dd50a6a9cba958cc4ebb0aab175863c25b9a4" default)))
  '(exec-path
    (quote
-	("/usr/bin" "/bin" "/usr/sbin" "/sbin" "/usr/local/Cellar/emacs-mac/emacs-25.1-rc2-mac-5.91/libexec/emacs/25.1/x86_64-apple-darwin15.6.0" "/usr/local/bin" "~/bin")))
+    ("/usr/bin" "/bin" "/usr/sbin" "/sbin" "/usr/local/Cellar/emacs-mac/emacs-25.1-rc2-mac-5.91/libexec/emacs/25.1/x86_64-apple-darwin15.6.0" "/usr/local/bin" "~/bin")))
+ '(frame-background-mode (quote dark))
  '(global-whitespace-mode nil)
  '(go-guru-build-tags "")
  '(go-guru-scope "orahub.oraclecorp.com/odx-oke-dev/k8s-manager/...,")
@@ -62,7 +63,7 @@
 (setq package-enable-at-startup nil) ; To avoid initializing twice
 (package-initialize)
 
-(load-theme 'solarized-dark)
+(load-theme 'solarized t)
 
 (projectile-global-mode)
 
@@ -75,9 +76,10 @@
 (add-hook 'before-save-hook 'gofmt-before-save)
 
 ;; http://stackoverflow.com/questions/69934/set-4-space-indent-in-emacs-in-text-mode
-;;(setq-default indent-tabs-mode nil)
+(setq-default indent-tabs-mode nil)
 (setq-default tab-width 4)
-;;(setq-default indent-line-function 'insert-tab)
+(setq-default indent-line-function 'insert-tab)
+
 ;; http://web-mode.org/
 (defun my-web-mode-hook ()
   (web-mode-use-tabs))
