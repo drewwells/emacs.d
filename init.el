@@ -124,7 +124,7 @@
 
 (global-set-key (kbd "C-c D")  'delete-file-and-buffer)
 (global-set-key (kbd "C-c K")  'kill-other-buffers)
-(global-set-key (kbd "C-c S")  'projectile-pt)
+(global-set-key (kbd "C-c S")  'helm-do-pt)
 
 ;; from flx
 (require 'flx-ido)
@@ -195,3 +195,6 @@
 ;;       '(("no_proxy" . "^\\(localhost\\|10.*\\)")
 ;;         ("http" . "http://www-proxy.us.oracle.com:80/")
 ;;         ("https" . "http://www-proxy.us.oracle.com:80/")))
+
+;; crazy helm stuff
+(global-set-key (kbd "M-x") 'helm-M-x)
