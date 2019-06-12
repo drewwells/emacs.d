@@ -23,7 +23,7 @@
  '(ido-ignore-buffers (quote ("ag search" "\\` " "go-guru" "scratch" "helm")))
  '(ido-ignore-files
    (quote
-	("\\`CVS/" "\\`#" "\\`.#" "\\`\\.\\./" "\\`\\./" "\\.test$")))
+    ("\\`CVS/" "\\`#" "\\`.#" "\\`\\.\\./" "\\`\\./" "\\.test$")))
  '(ido-use-url-at-point t)
  '(indent-tabs-mode t)
  '(js-indent-level 2)
@@ -31,20 +31,17 @@
  '(nxml-child-indent 2 t)
  '(package-archives
    (quote
-	(("melpa" . "https://melpa.org/packages/")
-	 ("gnu" . "http://elpa.gnu.org/packages/"))))
+    (("melpa" . "https://melpa.org/packages/")
+     ("gnu" . "http://elpa.gnu.org/packages/"))))
  '(package-enable-at-startup nil)
  '(package-selected-packages
    (quote
-	(protobuf-mode smart-tabs-mode helm helm-ag helm-projectile helm-pt go-guru magit go-autocomplete cl-lib yaml-mode web-mode solarized-theme pt popup go-scratch go-projectile flymake-go flx-ido dockerfile-mode docker company-go color-theme-solarized browse-at-remote ag)))
+    (protobuf-mode smart-tabs-mode helm helm-ag helm-projectile helm-pt go-guru magit go-autocomplete cl-lib popup go-scratch go-projectile flymake-go flx-ido dockerfile-mode docker company-go color-theme-solarized browse-at-remote ag)))
  '(projectile-completion-system (quote helm))
  '(projectile-globally-ignored-directories
    (quote
-	(".idea" ".eunit" ".git" ".hg" ".fslckout" ".bzr" "_darcs" ".tox" ".svn" ".stack-work" "vendor")))
- '(tool-bar-mode nil)
- '(web-mode-code-indent-offset 2)
- '(web-mode-enable-auto-indentation nil)
- '(web-mode-enable-auto-quoting nil))
+    (".idea" ".eunit" ".git" ".hg" ".fslckout" ".bzr" "_darcs" ".tox" ".svn" ".stack-work" "vendor")))
+ '(tool-bar-mode nil))
 
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
@@ -79,12 +76,6 @@
 (setq-default indent-tabs-mode nil)
 (setq-default tab-width 4)
 (setq-default indent-line-function 'insert-tab)
-
-;; http://web-mode.org/
-(defun my-web-mode-hook ()
-  (web-mode-use-tabs))
-
-(add-hook 'web-mode-hook  'my-web-mode-hook)
 
 ;; https://www.masteringemacs.org/article/introduction-to-ido-mode
 (setq ido-enable-flex-matching t)
@@ -141,21 +132,6 @@
 (require 'go-autocomplete)
 (require 'auto-complete-config)
 (ac-config-default)
-
-;; http://cha1tanya.com/2015/06/20/configuring-web-mode-with-jsx.html
-(require 'web-mode)
-(add-to-list 'auto-mode-alist '("\\.jsx\\'" . web-mode))
-(add-to-list 'auto-mode-alist '("\\.js\\'" . web-mode))
-(setq web-mode-content-types-alist
-  '(("jsx" . "\\.js[x]?\\'")))
-
-;; http://emacs.stackexchange.com/a/20055/11330
-(add-hook 'web-mode-hook
-      (lambda ()
-        ;; short circuit js mode and just do everything in jsx-mode
-        (if (equal web-mode-content-type "javascript")
-            (web-mode-set-content-type "jsx")
-          (message "now set to: %s" web-mode-content-type))))
 
 (require 'helm)
 
