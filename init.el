@@ -11,11 +11,12 @@
     ("8db4b03b9ae654d4a57804286eb3e332725c84d7cdab38463cb6b97d5762ad26" "d677ef584c6dfc0697901a44b885cc18e206f05114c8a3b7fde674fce6180879" "8aebf25556399b58091e533e455dd50a6a9cba958cc4ebb0aab175863c25b9a4" default)))
  '(exec-path
    (quote
-    ("/usr/bin" "/bin" "/usr/sbin" "/sbin" "/usr/local/bin" "~/bin")))
+    ("/usr/bin" "/bin" "/usr/sbin" "/sbin" "/usr/local/bin" "~/bin"
+     (\, "/usr/local/go/bin"))))
  '(frame-background-mode (quote dark))
  '(global-whitespace-mode nil)
  '(go-guru-build-tags "")
- '(go-oracle-command "oracle")
+ '(go-guru-debug t)
  '(go-play-browse-function (quote browse-url))
  '(ido-ignore-buffers (quote ("ag search" "\\` " "go-guru" "scratch" "helm")))
  '(ido-ignore-files
@@ -33,7 +34,7 @@
  '(package-enable-at-startup nil)
  '(package-selected-packages
    (quote
-    (protobuf-mode smart-tabs-mode helm helm-ag helm-projectile helm-pt go-guru magit go-autocomplete cl-lib popup go-scratch go-projectile flymake-go flx-ido dockerfile-mode docker company-go color-theme-solarized browse-at-remote ag)))
+    (exec-path-from-shell go-autocomplete yaml-mode protobuf-mode smart-tabs-mode helm helm-ag helm-projectile helm-pt go-guru magit cl-lib popup go-scratch go-projectile flymake-go flx-ido dockerfile-mode docker company-go color-theme-solarized browse-at-remote ag)))
  '(projectile-completion-system (quote helm))
  '(projectile-globally-ignored-directories
    (quote
@@ -50,6 +51,13 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; List of manual things to load ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;; https://github.com/mdempsky/gocode
+(add-to-list 'load-path "~/.emacs.d/lisp/")
+;;(require 'go-autocomplete)
+;;(require 'auto-complete-config)
+;;(ac-config-default)
+
 
 ;; force package initialization
 ;; http://stackoverflow.com/questions/24610945/emacs-cant-autostart-projectile-installed-through-melpa
