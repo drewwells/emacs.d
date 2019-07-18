@@ -5,3 +5,4 @@
 *.last
 elpa/archives
 *.desktop
+eshell/
