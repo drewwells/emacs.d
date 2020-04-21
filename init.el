@@ -22,7 +22,6 @@
    (quote
     ("\\`CVS/" "\\`#" "\\`.#" "\\`\\.\\./" "\\`\\./" "\\.test$")))
  '(ido-use-url-at-point t)
- '(indent-tabs-mode t)
  '(js-indent-level 2)
  '(menu-bar-mode nil)
  '(nxml-child-indent 2 t)
@@ -33,11 +32,16 @@
  '(package-enable-at-startup nil)
  '(package-selected-packages
    (quote
-    (exec-path-from-shell go-autocomplete yaml-mode protobuf-mode smart-tabs-mode helm helm-ag helm-projectile helm-pt go-guru magit cl-lib popup go-scratch go-projectile flymake-go flx-ido dockerfile-mode docker company-go color-theme-solarized browse-at-remote ag)))
+    (company-go flycheck lsp-ui company-lsp lsp-mode exec-path-from-shell go-autocomplete yaml-mode protobuf-mode smart-tabs-mode helm helm-ag helm-projectile helm-pt go-guru magit cl-lib popup go-scratch go-projectile flymake-go flx-ido dockerfile-mode docker color-theme-solarized browse-at-remote ag)))
  '(projectile-completion-system (quote helm))
  '(projectile-globally-ignored-directories
    (quote
     (".idea" ".eunit" ".git" ".hg" ".fslckout" ".bzr" "_darcs" ".tox" ".svn" ".stack-work" "vendor")))
+ '(solarized-bold t)
+ '(solarized-broken-srgb nil)
+ '(solarized-degrade nil)
+ '(solarized-termcolors 16)
+ '(solarized-underline t)
  '(tool-bar-mode nil))
 
 ;; https://github.com/Wilfred/ag.el/issues/93#issuecomment-348003505
@@ -67,8 +71,7 @@
 (setq package-enable-at-startup nil) ; To avoid initializing twice
 (package-initialize)
 
-(load-theme 'solarized t)
-
+;;(load-theme 'solarized t)
 
 (require 'projectile)
 (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
@@ -137,3 +140,30 @@
 
 ;; Disable Menu Bar
 (menu-bar-mode -1)
+
+;; gopls
+;; https://arenzana.org/2019/12/emacs-go-mode-revisited/
+(setq lsp-gopls-staticcheck t)
+(setq lsp-eldoc-render-all t)
+(setq lsp-gopls-complete-unimported t)
+
+;;Set up before-save hooks to format buffer and add/delete imports.
+;;Make sure you don't have other gofmt/goimports hooks enabled.
+
+(defun lsp-go-install-save-hooks ()
+  (add-hook 'before-save-hook #'lsp-format-buffer t t)
+  (add-hook 'before-save-hook #'lsp-organize-imports t t))
+(add-hook 'go-mode-hook #'lsp-go-install-save-hooks)
+
+;;lsp-ui-doc-enable is false because I don't like the popover that shows up on the right
+;;I'll change it if I want it back
+
+
+(setq lsp-ui-doc-enable nil
+      lsp-ui-peek-enable t
+      lsp-ui-sideline-enable t
+      lsp-ui-imenu-enable t
+      lsp-ui-flycheck-enable t)
+
+;; bar-browse is awesome
+(global-set-key (kbd "C-c g g") 'browse-at-remote-kill)
