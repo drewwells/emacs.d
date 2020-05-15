@@ -8,7 +8,7 @@
  '(current-language-environment "ASCII")
  '(custom-safe-themes
    (quote
-    ("8db4b03b9ae654d4a57804286eb3e332725c84d7cdab38463cb6b97d5762ad26" "d677ef584c6dfc0697901a44b885cc18e206f05114c8a3b7fde674fce6180879" "8aebf25556399b58091e533e455dd50a6a9cba958cc4ebb0aab175863c25b9a4" default)))
+    ("51ec7bfa54adf5fff5d466248ea6431097f5a18224788d0bd7eb1257a4f7b773" "7f1d414afda803f3244c6fb4c2c64bea44dac040ed3731ec9d75275b9e831fe5" "0fffa9669425ff140ff2ae8568c7719705ef33b7a927a0ba7c5e2ffcfac09b75" "c433c87bd4b64b8ba9890e8ed64597ea0f8eb0396f4c9a9e01bd20a04d15d358" "4cf3221feff536e2b3385209e9b9dc4c2e0818a69a1cdb4b522756bcdf4e00a4" "4aee8551b53a43a883cb0b7f3255d6859d766b6c5e14bcb01bed572fcbef4328" "13a8eaddb003fd0d561096e11e1a91b029d3c9d64554f8e897b2513dbf14b277" "2809bcb77ad21312897b541134981282dc455ccd7c14d74cc333b6e549b824f3" "8db4b03b9ae654d4a57804286eb3e332725c84d7cdab38463cb6b97d5762ad26" "d677ef584c6dfc0697901a44b885cc18e206f05114c8a3b7fde674fce6180879" "8aebf25556399b58091e533e455dd50a6a9cba958cc4ebb0aab175863c25b9a4" default)))
  '(exec-path
    (quote
     ("/usr/bin" "/bin" "/usr/sbin" "/sbin" "/usr/local/bin" "~/bin" "/usr/local/go/bin")))
@@ -32,16 +32,11 @@
  '(package-enable-at-startup nil)
  '(package-selected-packages
    (quote
-    (company-go flycheck lsp-ui company-lsp lsp-mode exec-path-from-shell go-autocomplete yaml-mode protobuf-mode smart-tabs-mode helm helm-ag helm-projectile helm-pt go-guru magit cl-lib popup go-scratch go-projectile flymake-go flx-ido dockerfile-mode docker color-theme-solarized browse-at-remote ag)))
+    (yasnippet use-package go-mode flycheck lsp-ui company-lsp lsp-mode exec-path-from-shell yaml-mode protobuf-mode smart-tabs-mode helm helm-ag helm-projectile helm-pt magit cl-lib popup flx-ido browse-at-remote ag)))
  '(projectile-completion-system (quote helm))
  '(projectile-globally-ignored-directories
    (quote
-    (".idea" ".eunit" ".git" ".hg" ".fslckout" ".bzr" "_darcs" ".tox" ".svn" ".stack-work" "vendor")))
- '(solarized-bold t)
- '(solarized-broken-srgb nil)
- '(solarized-degrade nil)
- '(solarized-termcolors 16)
- '(solarized-underline t)
+    (".idea" ".eunit" ".git" ".hg" ".fslckout" ".bzr" "_darcs" ".tox" ".svn" ".stack-work")))
  '(tool-bar-mode nil))
 
 ;; https://github.com/Wilfred/ag.el/issues/93#issuecomment-348003505
@@ -52,26 +47,17 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(default ((t (:family "Monaco" :foundry "nil" :slant normal :weight normal :height 161 :width normal)))))
+ '(default ((((class color) (min-colors 89)) (:foreground "#cccccc" :background "#262526")))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; List of manual things to load ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-;; https://github.com/mdempsky/gocode
-(add-to-list 'load-path "~/.emacs.d/lisp/")
-;;(require 'go-autocomplete)
-;;(require 'auto-complete-config)
-;;(ac-config-default)
-
 
 ;; force package initialization
 ;; http://stackoverflow.com/questions/24610945/emacs-cant-autostart-projectile-installed-through-melpa
 (require 'package)
 (setq package-enable-at-startup nil) ; To avoid initializing twice
 (package-initialize)
-
-;;(load-theme 'solarized t)
 
 (require 'projectile)
 (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
@@ -89,13 +75,6 @@
 (setq-default tab-width 4)
 (setq-default indent-line-function 'insert-tab)
 
-;; put backup files in a specific directory
-;; https://www.emacswiki.org/emacs/BackupDirectory#toc1
-(setq backup-directory-alist
-          `((".*" . ,temporary-file-directory)))
-    (setq auto-save-file-name-transforms
-          `((".*" ,temporary-file-directory t)))
-
 ;; http://emacsredux.com/blog/2013/04/03/delete-file-and-buffer/
 (defun delete-file-and-buffer ()
   "Kill the current buffer and deletes the file it is visiting."
@@ -110,7 +89,6 @@
           (kill-buffer))))))
 
 (global-set-key (kbd "C-c D")  'delete-file-and-buffer)
-
 
 ;; http://stackoverflow.com/questions/3417438/closing-all-other-buffers-in-emacs
 (defun kill-other-buffers ()
@@ -131,8 +109,6 @@
 (setq ido-enable-flex-matching t)
 (setq ido-use-faces nil)
 
-(require 'go-guru)
-
 (require 'helm)
 
 ;; Disable tool-bar
@@ -141,29 +117,38 @@
 ;; Disable Menu Bar
 (menu-bar-mode -1)
 
-;; gopls
-;; https://arenzana.org/2019/12/emacs-go-mode-revisited/
-(setq lsp-gopls-staticcheck t)
-(setq lsp-eldoc-render-all t)
-(setq lsp-gopls-complete-unimported t)
 
-;;Set up before-save hooks to format buffer and add/delete imports.
-;;Make sure you don't have other gofmt/goimports hooks enabled.
+;; https://github.com/golang/tools/blob/master/gopls/doc/emacs.md
+(use-package lsp-mode
+  :ensure t
+  :commands (lsp lsp-deferred)
+  :hook (go-mode . lsp-deferred))
 
+;; Set up before-save hooks to format buffer and add/delete imports.
+;; Make sure you don't have other gofmt/goimports hooks enabled.
 (defun lsp-go-install-save-hooks ()
   (add-hook 'before-save-hook #'lsp-format-buffer t t)
   (add-hook 'before-save-hook #'lsp-organize-imports t t))
 (add-hook 'go-mode-hook #'lsp-go-install-save-hooks)
 
-;;lsp-ui-doc-enable is false because I don't like the popover that shows up on the right
-;;I'll change it if I want it back
+;; Optional - provides fancier overlays.
+(use-package lsp-ui
+  :ensure t
+  :commands lsp-ui-mode)
 
+;; Company mode is a standard completion package that works well with lsp-mode.
+(use-package company
+  :ensure t
+  :config
+  ;; Optionally enable completion-as-you-type behavior.
+  (setq company-idle-delay 0)
+  (setq company-minimum-prefix-length 1))
 
-(setq lsp-ui-doc-enable nil
-      lsp-ui-peek-enable t
-      lsp-ui-sideline-enable t
-      lsp-ui-imenu-enable t
-      lsp-ui-flycheck-enable t)
+;; Optional - provides snippet support.
+(use-package yasnippet
+  :ensure t
+  :commands yas-minor-mode
+  :hook (go-mode . yas-minor-mode))
 
 ;; bar-browse is awesome
 (global-set-key (kbd "C-c g g") 'browse-at-remote-kill)
