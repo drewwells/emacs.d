@@ -42,13 +42,6 @@
 ;; https://github.com/Wilfred/ag.el/issues/93#issuecomment-348003505
 (setenv "PATH" (concat (getenv "PATH") ":/usr/local/bin"))
 
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(default ((((class color) (min-colors 89)) (:foreground "#cccccc" :background "#262526")))))
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; List of manual things to load ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
