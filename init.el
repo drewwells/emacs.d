@@ -23,6 +23,9 @@
     ("\\`CVS/" "\\`#" "\\`.#" "\\`\\.\\./" "\\`\\./" "\\.test$")))
  '(ido-use-url-at-point t)
  '(js-indent-level 2)
+ '(lsp-ui-doc-border "magenta")
+ '(lsp-ui-doc-enable nil)
+ '(lsp-ui-doc-position (quote bottom))
  '(menu-bar-mode nil)
  '(nxml-child-indent 2 t)
  '(package-archives
@@ -32,7 +35,7 @@
  '(package-enable-at-startup nil)
  '(package-selected-packages
    (quote
-    (yasnippet use-package go-mode flycheck lsp-ui company-lsp lsp-mode exec-path-from-shell yaml-mode protobuf-mode smart-tabs-mode helm helm-ag helm-projectile helm-pt magit cl-lib popup flx-ido browse-at-remote ag)))
+    (yasnippet use-package go-mode flycheck lsp-ui lsp-mode exec-path-from-shell yaml-mode protobuf-mode smart-tabs-mode helm helm-ag helm-projectile helm-pt magit cl-lib popup flx-ido browse-at-remote ag)))
  '(projectile-completion-system (quote helm))
  '(projectile-globally-ignored-directories
    (quote
@@ -46,6 +49,11 @@
 ;; List of manual things to load ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+;; https://www.reddit.com/r/emacs/comments/4j828f/til_setq_gcconsthreshold_100000000/
+(setq gc-cons-threshold 100000000)
+(add-hook 'after-init-hook (lambda () (setq gc-cons-threshold 800000)))
+
+
 ;; force package initialization
 ;; http://stackoverflow.com/questions/24610945/emacs-cant-autostart-projectile-installed-through-melpa
 (require 'package)
@@ -58,10 +66,20 @@
 
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
 
-;; go stuff https://godoc.org/golang.org/x/tools/cmd/goimports
-(setq gofmt-command "goimports")
+;; save backups in a backup directory
+;; https://stackoverflow.com/a/151946/217965
+(setq backup-directory-alist `(("." . "~/.saves")))
+(setq backup-by-copying t)
+(setq delete-old-versions t
+  kept-new-versions 6
+  kept-old-versions 2
+  version-control t)
 
-(add-hook 'before-save-hook 'gofmt-before-save)
+;; disabled, conflicts with pls-mode
+;; go stuff https://godoc.org/golang.org/x/tools/cmd/goimports
+;; (setq gofmt-command "goimports")
+
+;; (add-hook 'before-save-hook 'gofmt-before-save)
 
 ;; http://stackoverflow.com/questions/69934/set-4-space-indent-in-emacs-in-text-mode
 (setq-default indent-tabs-mode nil)
@@ -119,15 +137,15 @@
 
 ;; Set up before-save hooks to format buffer and add/delete imports.
 ;; Make sure you don't have other gofmt/goimports hooks enabled.
-(defun lsp-go-install-save-hooks ()
-  (add-hook 'before-save-hook #'lsp-format-buffer t t)
-  (add-hook 'before-save-hook #'lsp-organize-imports t t))
-(add-hook 'go-mode-hook #'lsp-go-install-save-hooks)
+ (defun lsp-go-install-save-hooks ()
+   (add-hook 'before-save-hook #'lsp-format-buffer t t)
+   (add-hook 'before-save-hook #'lsp-organize-imports t t))
+ (add-hook 'go-mode-hook #'lsp-go-install-save-hooks)
 
 ;; Optional - provides fancier overlays.
 (use-package lsp-ui
-  :ensure t
-  :commands lsp-ui-mode)
+   :ensure t
+   :commands lsp-ui-mode)
 
 ;; Company mode is a standard completion package that works well with lsp-mode.
 (use-package company
@@ -145,3 +163,9 @@
 
 ;; bar-browse is awesome
 (global-set-key (kbd "C-c g g") 'browse-at-remote-kill)
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(lsp-ui-doc-background ((t (:background "black")))))
