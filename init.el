@@ -3,43 +3,38 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(ag-ignore-list (quote ("/vendor/")))
+ '(ag-ignore-list '("/vendor/"))
  '(create-lockfiles nil)
  '(current-language-environment "ASCII")
  '(custom-safe-themes
-   (quote
-    ("51ec7bfa54adf5fff5d466248ea6431097f5a18224788d0bd7eb1257a4f7b773" "7f1d414afda803f3244c6fb4c2c64bea44dac040ed3731ec9d75275b9e831fe5" "0fffa9669425ff140ff2ae8568c7719705ef33b7a927a0ba7c5e2ffcfac09b75" "c433c87bd4b64b8ba9890e8ed64597ea0f8eb0396f4c9a9e01bd20a04d15d358" "4cf3221feff536e2b3385209e9b9dc4c2e0818a69a1cdb4b522756bcdf4e00a4" "4aee8551b53a43a883cb0b7f3255d6859d766b6c5e14bcb01bed572fcbef4328" "13a8eaddb003fd0d561096e11e1a91b029d3c9d64554f8e897b2513dbf14b277" "2809bcb77ad21312897b541134981282dc455ccd7c14d74cc333b6e549b824f3" "8db4b03b9ae654d4a57804286eb3e332725c84d7cdab38463cb6b97d5762ad26" "d677ef584c6dfc0697901a44b885cc18e206f05114c8a3b7fde674fce6180879" "8aebf25556399b58091e533e455dd50a6a9cba958cc4ebb0aab175863c25b9a4" default)))
+   '("51ec7bfa54adf5fff5d466248ea6431097f5a18224788d0bd7eb1257a4f7b773" "7f1d414afda803f3244c6fb4c2c64bea44dac040ed3731ec9d75275b9e831fe5" "0fffa9669425ff140ff2ae8568c7719705ef33b7a927a0ba7c5e2ffcfac09b75" "c433c87bd4b64b8ba9890e8ed64597ea0f8eb0396f4c9a9e01bd20a04d15d358" "4cf3221feff536e2b3385209e9b9dc4c2e0818a69a1cdb4b522756bcdf4e00a4" "4aee8551b53a43a883cb0b7f3255d6859d766b6c5e14bcb01bed572fcbef4328" "13a8eaddb003fd0d561096e11e1a91b029d3c9d64554f8e897b2513dbf14b277" "2809bcb77ad21312897b541134981282dc455ccd7c14d74cc333b6e549b824f3" "8db4b03b9ae654d4a57804286eb3e332725c84d7cdab38463cb6b97d5762ad26" "d677ef584c6dfc0697901a44b885cc18e206f05114c8a3b7fde674fce6180879" "8aebf25556399b58091e533e455dd50a6a9cba958cc4ebb0aab175863c25b9a4" default))
  '(exec-path
-   (quote
-    ("/usr/bin" "/bin" "/usr/sbin" "/sbin" "/usr/local/bin" "~/bin" "/usr/local/go/bin")))
- '(frame-background-mode (quote dark))
+   '("/usr/bin" "/bin" "/usr/sbin" "/sbin" "/usr/local/bin" "~/bin" "/usr/local/go/bin"))
+ '(frame-background-mode 'dark)
  '(global-whitespace-mode nil)
  '(go-guru-build-tags "")
  '(go-guru-debug t)
- '(go-play-browse-function (quote browse-url))
- '(ido-ignore-buffers (quote ("ag search" "\\` " "go-guru" "scratch" "helm")))
+ '(go-play-browse-function 'browse-url)
+ '(ido-ignore-buffers '("ag search" "\\` " "go-guru" "scratch" "helm"))
  '(ido-ignore-files
-   (quote
-    ("\\`CVS/" "\\`#" "\\`.#" "\\`\\.\\./" "\\`\\./" "\\.test$")))
+   '("\\`CVS/" "\\`#" "\\`.#" "\\`\\.\\./" "\\`\\./" "\\.test$"))
  '(ido-use-url-at-point t)
  '(js-indent-level 2)
+ '(lsp-go-codelens '((test . t) (generate . t)))
  '(lsp-ui-doc-border "magenta")
  '(lsp-ui-doc-enable nil)
- '(lsp-ui-doc-position (quote bottom))
+ '(lsp-ui-doc-position 'bottom)
  '(menu-bar-mode nil)
  '(nxml-child-indent 2 t)
  '(package-archives
-   (quote
-    (("melpa" . "https://melpa.org/packages/")
-     ("gnu" . "http://elpa.gnu.org/packages/"))))
+   '(("melpa" . "https://melpa.org/packages/")
+     ("gnu" . "http://elpa.gnu.org/packages/")))
  '(package-enable-at-startup nil)
  '(package-selected-packages
-   (quote
-    (yasnippet use-package go-mode flycheck lsp-ui lsp-mode exec-path-from-shell yaml-mode protobuf-mode smart-tabs-mode helm helm-ag helm-projectile helm-pt magit cl-lib popup flx-ido browse-at-remote ag)))
- '(projectile-completion-system (quote helm))
+   '(company go-mode yasnippet use-package flycheck lsp-ui lsp-mode exec-path-from-shell yaml-mode protobuf-mode smart-tabs-mode helm helm-ag helm-projectile helm-pt magit cl-lib popup flx-ido browse-at-remote ag))
+ '(projectile-completion-system 'helm)
  '(projectile-globally-ignored-directories
-   (quote
-    (".idea" ".eunit" ".git" ".hg" ".fslckout" ".bzr" "_darcs" ".tox" ".svn" ".stack-work")))
+   '(".idea" ".eunit" ".git" ".hg" ".fslckout" ".bzr" "_darcs" ".tox" ".svn" ".stack-work"))
  '(tool-bar-mode nil))
 
 ;; https://github.com/Wilfred/ag.el/issues/93#issuecomment-348003505
@@ -131,19 +126,16 @@
 ;; Disable Menu Bar
 (menu-bar-mode -1)
 
-
 ;; https://github.com/golang/tools/blob/master/gopls/doc/emacs.md
-(use-package lsp-mode
-  :ensure t
-  :commands (lsp lsp-deferred)
-  :hook (go-mode . lsp-deferred))
+(require 'lsp-mode)
+(add-hook 'go-mode-hook #'lsp-deferred)
 
 ;; Set up before-save hooks to format buffer and add/delete imports.
 ;; Make sure you don't have other gofmt/goimports hooks enabled.
- (defun lsp-go-install-save-hooks ()
-   (add-hook 'before-save-hook #'lsp-format-buffer t t)
-   (add-hook 'before-save-hook #'lsp-organize-imports t t))
- (add-hook 'go-mode-hook #'lsp-go-install-save-hooks)
+(defun lsp-go-install-save-hooks ()
+  (add-hook 'before-save-hook #'lsp-format-buffer t t)
+  (add-hook 'before-save-hook #'lsp-organize-imports t t))
+(add-hook 'go-mode-hook #'lsp-go-install-save-hooks)
 
 ;; Optional - provides fancier overlays.
 (use-package lsp-ui
