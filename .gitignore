@@ -6,3 +6,5 @@
 elpa/archives
 *.desktop
 eshell/
+
+/eln-cache

@@ -20,10 +20,6 @@
    '("\\`CVS/" "\\`#" "\\`.#" "\\`\\.\\./" "\\`\\./" "\\.test$"))
  '(ido-use-url-at-point t)
  '(js-indent-level 2)
- '(lsp-go-codelens '((test . t) (generate . t)))
- '(lsp-ui-doc-border "magenta")
- '(lsp-ui-doc-enable nil)
- '(lsp-ui-doc-position 'bottom)
  '(menu-bar-mode nil)
  '(nxml-child-indent 2 t)
  '(package-archives
@@ -31,7 +27,7 @@
      ("gnu" . "http://elpa.gnu.org/packages/")))
  '(package-enable-at-startup nil)
  '(package-selected-packages
-   '(company go-mode yasnippet use-package flycheck lsp-ui lsp-mode exec-path-from-shell yaml-mode protobuf-mode smart-tabs-mode helm helm-ag helm-projectile helm-pt magit cl-lib popup flx-ido browse-at-remote ag))
+   '(flymake flymake-go eglot jenkinsfile-mode company go-mode yasnippet use-package flycheck exec-path-from-shell yaml-mode protobuf-mode smart-tabs-mode helm helm-ag helm-projectile helm-pt magit cl-lib popup flx-ido browse-at-remote ag))
  '(projectile-completion-system 'helm)
  '(projectile-globally-ignored-directories
    '(".idea" ".eunit" ".git" ".hg" ".fslckout" ".bzr" "_darcs" ".tox" ".svn" ".stack-work"))
@@ -45,9 +41,10 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;; https://www.reddit.com/r/emacs/comments/4j828f/til_setq_gcconsthreshold_100000000/
-(setq gc-cons-threshold 100000000)
-(add-hook 'after-init-hook (lambda () (setq gc-cons-threshold 800000)))
+(setq gc-cons-threshold 200000000)
 
+;; https://emacs-lsp.github.io/lsp-mode/page/performance/#increase-the-amount-of-data-which-emacs-reads-from-the-process
+(setq read-process-output-max (* 1024 1024)) ;; 1mb
 
 ;; force package initialization
 ;; http://stackoverflow.com/questions/24610945/emacs-cant-autostart-projectile-installed-through-melpa
@@ -126,41 +123,43 @@
 ;; Disable Menu Bar
 (menu-bar-mode -1)
 
+;; https://company-mode.github.io/
+(add-hook 'after-init-hook 'global-company-mode)
+
+
 ;; https://github.com/golang/tools/blob/master/gopls/doc/emacs.md
-(require 'lsp-mode)
-(add-hook 'go-mode-hook #'lsp-deferred)
+(require 'project)
 
-;; Set up before-save hooks to format buffer and add/delete imports.
-;; Make sure you don't have other gofmt/goimports hooks enabled.
-(defun lsp-go-install-save-hooks ()
-  (add-hook 'before-save-hook #'lsp-format-buffer t t)
-  (add-hook 'before-save-hook #'lsp-organize-imports t t))
-(add-hook 'go-mode-hook #'lsp-go-install-save-hooks)
+(defun project-find-go-module (dir)
+  (when-let ((root (locate-dominating-file dir "go.mod")))
+    (cons 'go-module root)))
 
-;; Optional - provides fancier overlays.
-(use-package lsp-ui
-   :ensure t
-   :commands lsp-ui-mode)
+(cl-defmethod project-root ((project (head go-module)))
+  (cdr project))
 
-;; Company mode is a standard completion package that works well with lsp-mode.
-(use-package company
-  :ensure t
-  :config
-  ;; Optionally enable completion-as-you-type behavior.
-  (setq company-idle-delay 0)
-  (setq company-minimum-prefix-length 1))
+(add-hook 'project-find-functions #'project-find-go-module)
 
-;; Optional - provides snippet support.
-(use-package yasnippet
-  :ensure t
-  :commands yas-minor-mode
-  :hook (go-mode . yas-minor-mode))
+;; Optional: load other packages before eglot to enable eglot integrations.
+(require 'company)
+(require 'yasnippet)
+
+(require 'go-mode)
+(require 'eglot)
+(add-hook 'go-mode-hook 'eglot-ensure)
+
+(setq-default eglot-workspace-configuration
+    '((:gopls .
+        ((staticcheck . t)
+         (matcher . "CaseSensitive")))))
+
+;; https://github.com/joaotavora/eglot/issues/574#issuecomment-1249316625
+  (defun own/eglot-organize-imports ()
+    (call-interactively 'eglot-code-action-organize-imports))
+  (defun own/before-saving-go ()
+    ;; you might also like:
+    (add-hook 'before-save-hook #'eglot-format-buffer -10 t)
+    (add-hook 'before-save-hook #'own/eglot-organize-imports nil t))
+  (add-hook 'go-mode-hook #'own/before-saving-go)
 
 ;; bar-browse is awesome
 (global-set-key (kbd "C-c g g") 'browse-at-remote-kill)
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(lsp-ui-doc-background ((t (:background "black")))))
