@@ -27,7 +27,7 @@
      ("gnu" . "http://elpa.gnu.org/packages/")))
  '(package-enable-at-startup nil)
  '(package-selected-packages
-   '(flymake flymake-go eglot jenkinsfile-mode company go-mode yasnippet use-package flycheck exec-path-from-shell yaml-mode protobuf-mode smart-tabs-mode helm helm-ag helm-projectile helm-pt magit cl-lib popup flx-ido browse-at-remote ag))
+   '(json-rpc editorconfig quelpa-use-package quelpa flymake flymake-go eglot jenkinsfile-mode company go-mode yasnippet use-package flycheck exec-path-from-shell yaml-mode protobuf-mode smart-tabs-mode helm helm-ag helm-projectile helm-pt magit cl-lib popup flx-ido browse-at-remote ag))
  '(projectile-completion-system 'helm)
  '(projectile-globally-ignored-directories
    '(".idea" ".eunit" ".git" ".hg" ".fslckout" ".bzr" "_darcs" ".tox" ".svn" ".stack-work"))
@@ -163,3 +163,30 @@
 
 ;; bar-browse is awesome
 (global-set-key (kbd "C-c g g") 'browse-at-remote-kill)
+
+;; quelpa - build packages from source
+(unless (package-installed-p 'quelpa)
+  (with-temp-buffer
+    (url-insert-file-contents "https://raw.githubusercontent.com/quelpa/quelpa/master/quelpa.el")
+    (eval-buffer)
+    (quelpa-self-upgrade)))
+
+;; https://stackoverflow.com/a/30900018/217965
+(setq vc-follow-symlinks t)
+
+;; github copilot
+(add-to-list 'load-path "/home/drew/src/github.com/zerolfx/copilot.el")
+(require 'copilot)
+
+;; https://github.com/zerolfx/copilot.el
+;; (quelpa '(copilot :fetcher git :url "https://github.com/zerolfx/copilot.el.git"))
+(add-hook 'prog-mode-hook 'copilot-mode)
+(define-key copilot-completion-map (kbd "<tab>") 'copilot-accept-completion)
+(define-key copilot-completion-map (kbd "TAB") 'copilot-accept-completion)
+
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
