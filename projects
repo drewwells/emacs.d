@@ -1,3 +1,5 @@
 ;;; -*- lisp-data -*-
-(("/home/drew/src/github.com/Infoblox-CTO/deployment-configurations/")
+(("~/src/github.com/Infoblox-CTO/ngp.authz/")
+ ("~/src/github.com/Infoblox-CTO/athena-identity-service/")
+ ("/home/drew/src/github.com/Infoblox-CTO/deployment-configurations/")
  ("/home/drew/src/github.com/spiffe/helm-charts/"))

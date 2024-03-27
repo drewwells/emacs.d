@@ -4,6 +4,7 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(ag-ignore-list '("/vendor/"))
+ '(copilot-max-char -1)
  '(create-lockfiles nil)
  '(current-language-environment "ASCII")
  '(custom-safe-themes
@@ -16,9 +17,8 @@
  '(go-guru-build-tags "")
  '(go-guru-debug t)
  '(go-play-browse-function 'browse-url)
- '(ido-ignore-buffers '("ag search" "\\` " "go-guru" "scratch" "helm"))
- '(ido-ignore-files
-   '("\\`CVS/" "\\`#" "\\`.#" "\\`\\.\\./" "\\`\\./" "\\.test$"))
+ '(ido-ignore-buffers '("ag search" "\\` "))
+ '(ido-ignore-files '("\\`CVS/" "\\`#" "\\`.#" "\\`\\.\\./" "\\`\\./"))
  '(ido-use-url-at-point t)
  '(js-indent-level 2)
  '(menu-bar-mode nil)
@@ -28,7 +28,7 @@
      ("gnu" . "http://elpa.gnu.org/packages/")))
  '(package-enable-at-startup nil)
  '(package-selected-packages
-   '(json-rpc editorconfig quelpa-use-package quelpa flymake flymake-go eglot jenkinsfile-mode company go-mode yasnippet use-package flycheck exec-path-from-shell yaml-mode protobuf-mode smart-tabs-mode helm helm-ag helm-projectile helm-pt magit cl-lib popup flx-ido browse-at-remote ag))
+   '(flymake-go-staticcheck json-rpc editorconfig quelpa-use-package quelpa flymake flymake-go eglot jenkinsfile-mode company go-mode yasnippet use-package flycheck exec-path-from-shell yaml-mode protobuf-mode smart-tabs-mode helm helm-ag helm-projectile helm-pt magit cl-lib popup flx-ido browse-at-remote ag))
  '(projectile-completion-system 'helm)
  '(projectile-globally-ignored-directories
    '(".idea" ".eunit" ".git" ".hg" ".fslckout" ".bzr" "_darcs" ".tox" ".svn" ".stack-work"))
@@ -46,6 +46,23 @@
 
 ;; https://emacs-lsp.github.io/lsp-mode/page/performance/#increase-the-amount-of-data-which-emacs-reads-from-the-process
 (setq read-process-output-max (* 1024 1024)) ;; 1mb
+
+;; https://github.com/radian-software/straight.el?tab=readme-ov-file#install-packages
+(defvar bootstrap-version)
+(let ((bootstrap-file
+       (expand-file-name
+        "straight/repos/straight.el/bootstrap.el"
+        (or (bound-and-true-p straight-base-dir)
+            user-emacs-directory)))
+      (bootstrap-version 7))
+  (unless (file-exists-p bootstrap-file)
+    (with-current-buffer
+        (url-retrieve-synchronously
+         "https://raw.githubusercontent.com/radian-software/straight.el/develop/install.el"
+         'silent 'inhibit-cookies)
+      (goto-char (point-max))
+      (eval-print-last-sexp)))
+  (load bootstrap-file nil 'nomessage))
 
 ;; force package initialization
 ;; http://stackoverflow.com/questions/24610945/emacs-cant-autostart-projectile-installed-through-melpa
@@ -175,13 +192,16 @@
 ;; https://stackoverflow.com/a/30900018/217965
 (setq vc-follow-symlinks t)
 
-;; github copilot
-(add-to-list 'load-path "/home/drew/src/github.com/zerolfx/copilot.el")
-(require 'copilot)
+;; https://github.com/karthink/gptel
+(straight-use-package 'gptel)
 
-;; https://github.com/zerolfx/copilot.el
-;; (quelpa '(copilot :fetcher git :url "https://github.com/zerolfx/copilot.el.git"))
+;; https://github.com/copilot-emacs/copilot.el
+(use-package copilot
+  :straight (:host github :repo "copilot-emacs/copilot.el" :files ("dist" "*.el"))
+  :ensure t)
+;; you can utilize :map :hook and :config to customize copilot
 (add-hook 'prog-mode-hook 'copilot-mode)
+
 (define-key copilot-completion-map (kbd "<tab>") 'copilot-accept-completion)
 (define-key copilot-completion-map (kbd "TAB") 'copilot-accept-completion)
 
@@ -195,3 +215,9 @@
 ;; https://github.com/sellout/emacs-color-theme-solarized#installation--usage
 (add-to-list 'load-path "~/.emacs.d/themes/emacs-color-theme-solarized/")
 (load-theme 'solarized t)
+
+;; Editorconfig
+(editorconfig-mode 1)
+
+(add-hook 'go-mode-hook #'flymake-go-staticcheck-enable)
+(add-hook 'go-mode-hook #'flymake-mode)
