@@ -1,1 +1,1 @@
-((copilot :fetcher git :url "https://github.com/zerolfx/copilot.el.git") (quelpa :repo "quelpa/quelpa" :fetcher github))
+((copilot :fetcher github :repo "copilot-emacs/copilot.el" :branch "main" :files ("*.el")) (quelpa :repo "quelpa/quelpa" :fetcher github))

@@ -3,7 +3,10 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(ag-arguments '("--smart-case" "--stats" "--hidden"))
  '(ag-ignore-list '("/vendor/"))
+ '(async-bytecomp-package-mode t)
+ '(copilot-indent-offset-warning-disable t)
  '(copilot-max-char -1)
  '(create-lockfiles nil)
  '(current-language-environment "ASCII")
@@ -16,23 +19,21 @@
  '(global-whitespace-mode nil)
  '(go-guru-build-tags "")
  '(go-guru-debug t)
- '(go-play-browse-function 'browse-url)
+ '(gptel-api-key 'gptel-api-key-from-auth-source)
  '(ido-ignore-buffers '("ag search" "\\` "))
  '(ido-ignore-files '("\\`CVS/" "\\`#" "\\`.#" "\\`\\.\\./" "\\`\\./"))
  '(ido-use-url-at-point t)
  '(js-indent-level 2)
  '(menu-bar-mode nil)
+ '(mode-require-final-newline nil)
  '(nxml-child-indent 2 t)
- '(package-archives
-   '(("melpa" . "https://melpa.org/packages/")
-     ("gnu" . "http://elpa.gnu.org/packages/")))
- '(package-enable-at-startup nil)
  '(package-selected-packages
-   '(flymake-go-staticcheck json-rpc editorconfig quelpa-use-package quelpa flymake flymake-go eglot jenkinsfile-mode company go-mode yasnippet use-package flycheck exec-path-from-shell yaml-mode protobuf-mode smart-tabs-mode helm helm-ag helm-projectile helm-pt magit cl-lib popup flx-ido browse-at-remote ag))
+   '(ethan-wspace copilot flymake-go-staticcheck json-rpc editorconfig quelpa-use-package quelpa flymake flymake-go eglot jenkinsfile-mode company go-mode yasnippet use-package flycheck exec-path-from-shell yaml-mode protobuf-mode smart-tabs-mode helm helm-ag helm-projectile helm-pt magit cl-lib popup flx-ido browse-at-remote ag))
  '(projectile-completion-system 'helm)
  '(projectile-globally-ignored-directories
    '(".idea" ".eunit" ".git" ".hg" ".fslckout" ".bzr" "_darcs" ".tox" ".svn" ".stack-work"))
- '(tool-bar-mode nil))
+ '(tool-bar-mode nil)
+)
 
 ;; https://github.com/Wilfred/ag.el/issues/93#issuecomment-348003505
 (setenv "PATH" (concat (getenv "PATH") ":/usr/local/bin"))
@@ -47,34 +48,23 @@
 ;; https://emacs-lsp.github.io/lsp-mode/page/performance/#increase-the-amount-of-data-which-emacs-reads-from-the-process
 (setq read-process-output-max (* 1024 1024)) ;; 1mb
 
-;; https://github.com/radian-software/straight.el?tab=readme-ov-file#install-packages
-(defvar bootstrap-version)
-(let ((bootstrap-file
-       (expand-file-name
-        "straight/repos/straight.el/bootstrap.el"
-        (or (bound-and-true-p straight-base-dir)
-            user-emacs-directory)))
-      (bootstrap-version 7))
-  (unless (file-exists-p bootstrap-file)
-    (with-current-buffer
-        (url-retrieve-synchronously
-         "https://raw.githubusercontent.com/radian-software/straight.el/develop/install.el"
-         'silent 'inhibit-cookies)
-      (goto-char (point-max))
-      (eval-print-last-sexp)))
-  (load bootstrap-file nil 'nomessage))
-
 ;; force package initialization
 ;; http://stackoverflow.com/questions/24610945/emacs-cant-autostart-projectile-installed-through-melpa
 (require 'package)
+(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
 (setq package-enable-at-startup nil) ; To avoid initializing twice
 (package-initialize)
+
+;; Clones quelpa repo on every emacs start
+;;(require 'quelpa-use-package)
+
+;; https://docs.projectile.mx/projectile/installation.html#installation-via-package-el
+(unless (package-installed-p 'projectile)
+  (package-install 'projectile))
 
 (require 'projectile)
 (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
 (projectile-mode +1)
-
-(add-hook 'before-save-hook 'delete-trailing-whitespace)
 
 ;; save backups in a backup directory
 ;; https://stackoverflow.com/a/151946/217965
@@ -98,21 +88,6 @@
 (setq-default indent-tabs-mode nil)
 (setq-default tab-width 4)
 (setq-default indent-line-function 'insert-tab)
-
-;; http://emacsredux.com/blog/2013/04/03/delete-file-and-buffer/
-(defun delete-file-and-buffer ()
-  "Kill the current buffer and deletes the file it is visiting."
-  (interactive)
-  (let ((filename (buffer-file-name)))
-    (when filename
-      (if (vc-backend filename)
-          (vc-delete-file filename)
-        (progn
-          (delete-file filename)
-          (message "Deleted file %s" filename)
-          (kill-buffer))))))
-
-(global-set-key (kbd "C-c D")  'delete-file-and-buffer)
 
 ;; http://stackoverflow.com/questions/3417438/closing-all-other-buffers-in-emacs
 (defun kill-other-buffers ()
@@ -182,28 +157,20 @@
 ;; bar-browse is awesome
 (global-set-key (kbd "C-c g g") 'browse-at-remote-kill)
 
-;; quelpa - build packages from source
-(unless (package-installed-p 'quelpa)
-  (with-temp-buffer
-    (url-insert-file-contents "https://raw.githubusercontent.com/quelpa/quelpa/master/quelpa.el")
-    (eval-buffer)
-    (quelpa-self-upgrade)))
-
 ;; https://stackoverflow.com/a/30900018/217965
 (setq vc-follow-symlinks t)
 
-;; https://github.com/karthink/gptel
-(straight-use-package 'gptel)
-
 ;; https://github.com/copilot-emacs/copilot.el
 (use-package copilot
-  :straight (:host github :repo "copilot-emacs/copilot.el" :files ("dist" "*.el"))
-  :ensure t)
+  :quelpa (copilot :fetcher github
+                   :repo "copilot-emacs/copilot.el"
+                   :branch "main"
+                   :files ("*.el")))
 ;; you can utilize :map :hook and :config to customize copilot
 (add-hook 'prog-mode-hook 'copilot-mode)
 
-(define-key copilot-completion-map (kbd "<tab>") 'copilot-accept-completion)
-(define-key copilot-completion-map (kbd "TAB") 'copilot-accept-completion)
+;;(define-key copilot-completion-map (kbd "<tab>") 'copilot-accept-completion)
+;;(define-key copilot-completion-map (kbd "TAB") 'copilot-accept-completion)
 
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
@@ -221,3 +188,10 @@
 
 (add-hook 'go-mode-hook #'flymake-go-staticcheck-enable)
 (add-hook 'go-mode-hook #'flymake-mode)
+
+;; https://github.com/glasserc/ethan-wspace
+(use-package ethan-wspace
+  :ensure t
+  :config
+  (setq mode-require-final-newline nil)
+  (global-ethan-wspace-mode 1))
