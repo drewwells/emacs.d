@@ -27,13 +27,17 @@
  '(menu-bar-mode nil)
  '(mode-require-final-newline nil)
  '(nxml-child-indent 2 t)
+ '(package-enable-at-startup nil)
  '(package-selected-packages
    '(ethan-wspace copilot flymake-go-staticcheck json-rpc editorconfig quelpa-use-package quelpa flymake flymake-go eglot jenkinsfile-mode company go-mode yasnippet use-package flycheck exec-path-from-shell yaml-mode protobuf-mode smart-tabs-mode helm helm-ag helm-projectile helm-pt magit cl-lib popup flx-ido browse-at-remote ag))
  '(projectile-completion-system 'helm)
+ '(projectile-enable-caching t)
  '(projectile-globally-ignored-directories
-   '(".idea" ".eunit" ".git" ".hg" ".fslckout" ".bzr" "_darcs" ".tox" ".svn" ".stack-work"))
- '(tool-bar-mode nil)
-)
+   '(".idea" ".eunit" ".git" ".hg" ".fslckout" ".bzr" "_darcs" ".tox" ".svn" ".stack-work" "build"))
+ '(projectile-globally-ignored-files '("TAGS"))
+ '(projectile-indexing-method 'hybrid)
+ '(projectile-sort-order 'recently-active)
+ '(tool-bar-mode nil))
 
 ;; https://github.com/Wilfred/ag.el/issues/93#issuecomment-348003505
 (setenv "PATH" (concat (getenv "PATH") ":/usr/local/bin"))
@@ -55,8 +59,6 @@
 (setq package-enable-at-startup nil) ; To avoid initializing twice
 (package-initialize)
 
-;; Clones quelpa repo on every emacs start
-;;(require 'quelpa-use-package)
 
 ;; https://docs.projectile.mx/projectile/installation.html#installation-via-package-el
 (unless (package-installed-p 'projectile)
@@ -160,12 +162,48 @@
 ;; https://stackoverflow.com/a/30900018/217965
 (setq vc-follow-symlinks t)
 
+;; https://github.com/glasserc/ethan-wspace
+(use-package ethan-wspace
+  :ensure t
+  :config
+  (setq mode-require-final-newline nil)
+  (global-ethan-wspace-mode 1))
+
+;; https://github.com/quelpa/quelpa/pull/104/files#diff-b335630551682c19a781afebcf4d07bf978fb1f8ac04c6bf87428ed5106870f5R256
+(setq quelpa-checkout-melpa-p nil)
+
+(unless (package-installed-p 'quelpa)
+  (with-temp-buffer
+    (url-insert-file-contents "https://github.com/quelpa/quelpa/raw/master/quelpa.el")
+    (eval-buffer)
+    (quelpa-self-upgrade)))
+
+(quelpa
+ '(quelpa-use-package
+   :fetcher git
+   :url "https://github.com/quelpa/quelpa-use-package.git"))
+
+(require 'quelpa-use-package)
+
+
 ;; https://github.com/copilot-emacs/copilot.el
 (use-package copilot
   :quelpa (copilot :fetcher github
                    :repo "copilot-emacs/copilot.el"
                    :branch "main"
-                   :files ("*.el")))
+                   :files ("*.el"))
+
+  :bind (("C-c M-f" . copilot-complete)
+         :map copilot-completion-map
+         ("C-g" . 'copilot-clear-overlay)
+         ("M-p" . 'copilot-previous-completion)
+         ("M-n" . 'copilot-next-completion)
+         ("<tab>" . 'copilot-accept-completion)
+         ("M-f" . 'copilot-accept-completion-by-word)
+         ("M-RET" . 'copilot-accept-completion-by-line)
+         ))
+
+
 ;; you can utilize :map :hook and :config to customize copilot
 (add-hook 'prog-mode-hook 'copilot-mode)
 
@@ -188,10 +226,3 @@
 
 (add-hook 'go-mode-hook #'flymake-go-staticcheck-enable)
 (add-hook 'go-mode-hook #'flymake-mode)
-
-;; https://github.com/glasserc/ethan-wspace
-(use-package ethan-wspace
-  :ensure t
-  :config
-  (setq mode-require-final-newline nil)
-  (global-ethan-wspace-mode 1))
