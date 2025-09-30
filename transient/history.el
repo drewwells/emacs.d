@@ -2,4 +2,6 @@
  (gptel-menu nil)
  (gptel-system-prompt nil)
  (magit-blame
-  ("-w")))
+  ("-w"))
+ (magit-rebase
+  ("--autostash")))
