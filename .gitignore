@@ -1,4 +1,6 @@
 *~
+\#*\#
+.\#*
 *.dat
 *.cache
 *.eld
@@ -9,3 +11,10 @@ eshell/
 
 /eln-cache
 /straight
+
+# Emacs compiled Lisp
+*.elc
+
+# Native compilation cache (Emacs 28+)
+eln-cache/
+*.eln

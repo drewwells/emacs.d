@@ -51,6 +51,10 @@
 ;; List of manual things to load ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+;; Make Emacs prefer source when both exist, so stale .elc doesn’t bite you:
+;; https://chatgpt.com/share/695ffe9c-0988-8007-add8-3a549e6316cc
+(setq load-prefer-newer t)
+
 ;; https://www.reddit.com/r/emacs/comments/4j828f/til_setq_gcconsthreshold_100000000/
 (setq gc-cons-threshold 200000000)
 
